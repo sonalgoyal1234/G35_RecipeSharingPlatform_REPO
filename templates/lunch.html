@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delicious Lunch Recipes</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body class="bg-gray-50 min-h-screen" x-data="recipeData">
+    <header class="bg-gradient-to-r  text-white py-12" style="background-color:  #6A40BF;">
+        <div class="container mx-auto px-4">
+            <h1 class="text-4xl font-bold text-center mb-4">Lunch Recipes</h1>
+            <p class="text-center text-lg">Fuel your afternoon with these delicious lunch ideas</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+
+        <div class="mb-8 p-4 bg-white rounded-lg shadow-md flex flex-col md:flex-row md:space-x-4">
+            <div class="mb-4 md:mb-0">
+                <label for="time">Max Time:</label>
+                <select id="time" x-model="filters.time" class="border rounded px-2 py-1">
+                    <option value="">Any</option>
+                    <option value="10">10 mins</option>
+                    <option value="15">15 mins</option>
+                    <option value="20">20 mins</option>
+                    <option value="25">25 mins</option>
+                    <option value="30">30 mins</option>
+                    <option value="45">45 mins</option>
+                </select>
+            </div>
+            <div class="mb-4 md:mb-0">
+                <label for="serves">Serves:</label>
+                <select id="serves" x-model="filters.serves" class="border rounded px-2 py-1">
+                    <option value="">Any</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+            </div>
+            <div>
+                <label for="type">Type:</label>
+                <select id="type" x-model="filters.type" class="border rounded px-2 py-1">
+                    <option value="">Any</option>
+                    <option value="veg">Veg</option>
+                    <option value="nonveg">Non-Veg</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            <template x-for="recipe in filteredRecipes" :key="recipe.name">
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                    <div class="relative h-48">
+                        <img :src="recipe.image" :alt="recipe.name" class="absolute inset-0 w-full h-full object-contain bg-yellow-50"/>
+                    </div>
+                    <div class="p-6">
+                        <h2 class="text-2xl font-bold mb-2" x-text="recipe.name"></h2>
+                        <div class="flex items-center mb-4">
+                            <span class="text-gray-600 mr-4">⏰ <span x-text="recipe.time"></span> mins</span>
+                            <span class="text-gray-600">👥 Serves <span x-text="recipe.serves"></span></span>
+                            <span class="text-gray-600 ml-4 capitalize" x-text="recipe.type"></span>
+                        </div>
+                        <div class="mb-4">
+                            <h3 class="font-semibold mb-2">Ingredients:</h3>
+                            <ul class="text-gray-600 list-disc pl-5">
+                                <template x-for="ingredient in recipe.ingredients">
+                                    <li x-text="ingredient"></li>
+                                </template>
+                            </ul>
+                        </div>
+                        <button class=" text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors" style="background-color: #6A40BF;">View Full Recipe</button>
+                    </div>
+                </div>
+            </template>
+
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p>© 2025 Breakfast Recipes. All recipes are kitchen-tested and approved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('recipeData', () => ({
+                filters: {
+                    time: '',
+                    serves: '',
+                    type: ''
+                },
+                recipes: [
+                    {
+                        name: "Chicken Caesar Salad",
+                        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSo_mxxnrIh5p0zp3er5AvY_uU_lt_urPJvEQ&s",
+                        time: 20,
+                        serves: 2,
+                        type: "nonveg",
+                        ingredients: ["Grilled Chicken Breast", "Romaine Lettuce", "Croutons", "Parmesan Cheese", "Caesar Dressing"]
+                    },
+                    {
+                        name: "Tuna Salad Sandwich",
+                        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmzSw8pjrK7FmWwbQK90TDDyCkpu8TBEBw7Q&s",
+                        time: 15,
+                        serves: 1,
+                        type: "nonveg",
+                        ingredients: ["Canned Tuna", "Mayonnaise", "Celery", "Red Onion", "Bread"]
+                    },
+                    {
+                        name: "Caprese Salad",
+                        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRC_Ya_cU2iduGhKBqH_Je-xD-kl0xAShowxA&s",
+                        time: 10,
+                        serves: 2,
+                        type: "veg",
+                        ingredients: ["Fresh Mozzarella", "Tomatoes", "Basil Leaves", "Olive Oil", "Balsamic Glaze"]
+                    },
+                    {
+                        name: "Mediterranean Quinoa Salad",
+                        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxSFHYk0pD9nzWBvYt2neT_geWD-_fCTKd1A&s",
+                        time: 20,
+                        serves: 2,
+                        type: "veg",
+                        ingredients: ["Quinoa", "Cucumber", "Tomatoes", "Red Onion", "Feta Cheese", "Olives", "Lemon-Herb Dressing"]
+                    },
+                    {
+                        name: "Lentil Soup",
+                        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIKDmxtZQW5tVnGyu6s-j32bngY1oK2TTimw&s",
+                        time: 30,
+                        serves: 4,
+                        type: "veg",
+                        ingredients: ["Lentils", "Carrots", "Celery", "Onion", "Vegetable Broth", "Diced Tomatoes", "Herbs & Spices"]
+                    },
+                    {
+                        name: "Falafel Wraps",
+                        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLmoxBbbKWNZX7EBBkx9Kp9OnQ_OUWZ4hvjg&s",
+                        time: 25,
+                        serves: 2,
+                        type: "veg",
+                        ingredients: ["Falafel Balls", "Pita Bread or Wraps", "Hummus", "Tahini Sauce", "Fresh Vegetables (Lettuce, Tomato, Cucumber)"]
+                    },
+                    {
+                        name: "Pasta with Pesto and Vegetables",
+                        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAMUxdB45TYojxY1DeHDvKZIVKv3m5Pt8PgQ&s",
+                        time: 20,
+                        serves: 2,
+                        type: "veg",
+                        ingredients: ["Pasta (Penne or Rotini)", "Pesto Sauce", "Cherry Tomatoes", "Spinach", "Pine Nuts", "Parmesan Cheese"]
+                    },
+                    {
+                        name: "Chicken and Avocado Burrito Bowls",
+                        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1PqdqyWFOOZ6jFjwCPyKMSTkS4o9xgVuLCQ&s",
+                        time: 25,
+                        serves: 2,
+                        type: "nonveg",
+                        ingredients: ["Cooked Chicken (Shredded)", "Rice (Brown or White)", "Black Beans", "Corn", "Avocado (Diced)", "Salsa", "Lime Juice"]
+                    },
+                    {
+                        name: "Greek Lemon Chicken and Potatoes",
+                        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUQ5SdIkB3YyfVO1n3hiZFMKNoOZNzSPQldA&s",
+                        time: 45,
+                        serves: 4,
+                        type: "nonveg",
+                        ingredients: ["Chicken Thighs or Breasts", "Potatoes (Cut into Wedges)", "Lemon (Juice and Slices)", "Olive Oil", "Garlic", "Oregano", "Salt and Pepper"]
+                    },
+                    {
+                        name: "Chickpea and Vegetable Curry",
+                        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjiVsV-DuqrmgNf-Lprb4Y4Ak--_j0hVp4IA&s",
+                        time: 30,
+                        serves: 4,
+                        type: "veg",
+                        ingredients: ["Chickpeas", "Coconut Milk", "Diced Tomatoes", "Onion", "Garlic", "Ginger", "Curry Powder", "Spinach or other Vegetables"]
+                    },
+                    {
+                        name: "Pasta Salad with Roasted Vegetables",
+                        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCp7pJrqIgm_v6tCvepVvwySqD3k7xJ_Envw&s",
+                        time: 40,
+                        serves: 4,
+                        type: "veg",
+                        ingredients: ["Pasta (Penne or Rotini)", "Bell Peppers", "Zucchini", "Eggplant", "Cherry Tomatoes", "Mozzarella Balls", "Pesto Dressing"]
+                    },
+                    {
+                        name: "Lighter Spaghetti Carbonara",
+                        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQim_grh4F99WCY5vcSe9C2oz_aoPsR4puV_g&s",
+                        time: 20,
+                        serves: 2,
+                        type: "nonveg",
+                        ingredients: ["Spaghetti", "Eggs", "Turkey Bacon or Pancetta", "Parmesan Cheese", "Peas (optional)", "Black Pepper"]
+                    }
+                ],
+                get filteredRecipes() {
+                    return this.recipes.filter(recipe => {
+                        const timeMatch = this.filters.time === '' || recipe.time <= parseInt(this.filters.time);
+                        const servesMatch = this.filters.serves === '' || recipe.serves == parseInt(this.filters.serves);
+                        const typeMatch = this.filters.type === '' || recipe.type === this.filters.type;
+                        return timeMatch && servesMatch && typeMatch;
+                    });
+                }
+            }));
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recipe Sharing</title>
+  <style>
+    /* Global Styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    
+    /* Header Navigation Bar */
+    header {
+      background-color:   #6a40bf;
+      color: #fff;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    header nav a {
+      color: #ffffff;
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: bold;
+      position: relative;
+      right: 700px;
+      /* margin: 40px; */
+      top: 20px;
+    }
+    
+    header nav a:hover {
+      text-decoration: underline;
+      background-color: #eef0f1;
+      color: rgb(6, 30, 90);
+    }
+    
+    /* Main Container */
+    .main-content {
+      flex: 1;
+    }
+    
+    /* Recipe Container */
+    .recipe-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    form label {
+      display: block;
+      margin-top: 10px;
+    }
+    
+    input,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    
+    button {
+      padding: 9px 18px;
+      /* background-color: #28a745; */
+      color: #6a40bf;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      position: relative;
+      left: 400px;
+      bottom: 10px;
+      margin: 5px;
+    }
+    
+    button:hover {
+      background-color: #6a40bf;
+      color: white;
+    }
+    
+    .recipe-cards-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    
+    .recipe-card {
+      background-color: #fff;
+      border-radius: 8px;
+      width: 250px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      text-align: center;
+      cursor: pointer;
+    }
+    
+    .recipe-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    
+    .recipe-card h3 {
+      font-size: 1.2rem;
+      margin: 10px 0;
+    }
+    
+    /* Modal styling */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
+      animation: slideDown 0.5s ease;
+    }
+    
+    @keyframes slideDown {
+      from {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    
+    .modal-content {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      width: 80%;
+      max-width: 800px;
+      position: relative;
+      text-align: center;
+    }
+    
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 30px;
+      cursor: pointer;
+    }
+    
+    .recipe-details img {
+      width: 100%;
+      height: auto;
+      max-height: 400px;
+      object-fit: cover;
+      margin-bottom: 20px;
+    }
+    
+    .rating-container {
+      margin-top: 20px;
+      text-align: center;
+    }
+    
+    .stars span {
+      cursor: pointer;
+      font-size: 30px;
+      color: gray;
+    }
+    
+    .stars .selected {
+      color: #f39c12;
+    }
+    
+    .btn {
+      margin: 10px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    
+    .btn:hover {
+      background-color: #0056b3;
+    }
+    
+    /* Footer */
+    footer {
+      background-color: #343a40;
+      color: #fff;
+      text-align: center;
+      padding: 15px 20px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header Navigation -->
+  <header>
+    <div class="logo">
+      <h1>My Recipes</h1>
+    </div>
+    <nav>
+      
+      <nav>
+        <a href="index.html" >Home</a>
+        <a href="ideas.html">Ideas</a>
+        <a href="explore.html">Explore</a>
+        <a href="meals.html">Meals</a>
+        <a href="ingredient.html">Ingredients</a>
+        <a href="about.html">About Us</a>
+        <a href="premium.html" class="premium">Premium</a>
+    
+    </nav>
+    <button class="login" id="profile-button">Tisha</button>
+    <button class="login" id="profile-button">Logout</button>
+  </header>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="recipe-container">
+      <h1>Share Your Recipe</h1>
+      <form id="recipe-form" enctype="multipart/form-data">
+        <label for="title">Recipe Title:</label>
+        <input type="text" id="title" name="title" required />
+
+        <label for="ingredients">Ingredients:</label>
+        <textarea id="ingredients" name="ingredients" rows="4" required></textarea>
+
+        <label for="instructions">Instructions:</label>
+        <textarea id="instructions" name="instructions" rows="6" required></textarea>
+
+        <label for="photo">Recipe Photo:</label>
+        <input type="file" id="photo" name="photo" accept="image/*" required />
+
+        <button type="submit">Submit Recipe</button>
+      </form>
+    </div>
+
+    <!-- Recipe Cards Container -->
+    <div id="recipe-cards-container" class="recipe-cards-container">
+      <!-- Recipe Cards will be displayed here -->
+    </div>
+
+    <!-- Modal for Recipe Details -->
+    <div id="recipe-details-modal" class="modal">
+      <div class="modal-content">
+        <span id="close-modal" class="close-btn">&times;</span>
+        <div id="recipe-details">
+          <!-- Full Recipe Details will be displayed here -->
+        </div>
+        <div class="rating-container">
+          <div class="stars" id="star-rating">
+            <span class="star" data-rating="1">&#9733;</span>
+            <span class="star" data-rating="2">&#9733;</span>
+            <span class="star" data-rating="3">&#9733;</span>
+            <span class="star" data-rating="4">&#9733;</span>
+            <span class="star" data-rating="5">&#9733;</span>
+          </div>
+        </div>
+        <div class="action-buttons">
+          <button id="edit-recipe" class="btn">Edit</button>
+          <button id="delete-recipe" class="btn">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 My Recipes. All rights reserved.</p>
+  </footer>
+
+  <script>
+    let currentRecipeIndex = null; // Track the currently opened recipe
+
+    // On page load, load recipes from local storage if available
+    window.addEventListener("load", function () {
+      loadRecipes();
+    });
+
+    // Handle form submission
+    document.getElementById("recipe-form").addEventListener("submit", function (
+      event
+    ) {
+      event.preventDefault();
+
+      // Capture form data
+      const title = document.getElementById("title").value;
+      const ingredients = document.getElementById("ingredients").value;
+      const instructions = document.getElementById("instructions").value;
+      const photo = document.getElementById("photo").files[0];
+
+      // Create a FileReader to display the photo preview
+      const reader = new FileReader();
+      reader.onloadend = function () {
+        // Create a recipe object
+        const recipe = {
+          title: title,
+          ingredients: ingredients,
+          instructions: instructions,
+          photo: reader.result,
+          rating: 0, // Default rating to 0
+        };
+
+        // Retrieve current recipes from localStorage, or initialize as an empty array
+        const recipes = JSON.parse(localStorage.getItem("recipes")) || [];
+
+        // Add the new recipe to the array
+        recipes.push(recipe);
+
+        // Save the updated recipes array to localStorage
+        localStorage.setItem("recipes", JSON.stringify(recipes));
+
+        // Add the new recipe card to the page
+        displayRecipeCard(recipe, recipes.length - 1);
+
+        // Reset the form
+        document.getElementById("recipe-form").reset();
+      };
+      reader.readAsDataURL(photo);
+    });
+
+    // Function to load recipes from local storage and display them
+    function loadRecipes() {
+      const recipes = JSON.parse(localStorage.getItem("recipes")) || [];
+      recipes.forEach((recipe, index) => {
+        displayRecipeCard(recipe, index);
+      });
+    }
+
+    // Function to display a recipe card on the page
+    function displayRecipeCard(recipe, index) {
+      const card = document.createElement("div");
+      card.classList.add("recipe-card");
+      card.innerHTML = `
+          <img src="${recipe.photo}" alt="Recipe Photo">
+          <h3>${recipe.title}</h3>
+      `;
+
+      // Open the modal when the card is clicked
+      card.addEventListener("click", function () {
+        openRecipeModal(recipe, index);
+      });
+
+      // Add the card to the container
+      document
+        .getElementById("recipe-cards-container")
+        .appendChild(card);
+    }
+
+    // Function to open the recipe in the modal (enlarged view with all controls)
+    function openRecipeModal(recipe, index) {
+      currentRecipeIndex = index; // Save the index of the recipe being viewed
+      const modal = document.getElementById("recipe-details-modal");
+      const detailsContainer = document.getElementById("recipe-details");
+      detailsContainer.innerHTML = `
+          <div class="recipe-details">
+            <img src="${recipe.photo}" alt="Recipe Photo">
+            <h2>${recipe.title}</h2>
+            <p><strong>Ingredients:</strong> ${recipe.ingredients}</p>
+            <p><strong>Instructions:</strong> ${recipe.instructions}</p>
+          </div>
+      `;
+      // Set the stars based on current rating
+      setRating(recipe.rating);
+
+      // Display the modal
+      modal.style.display = "flex";
+
+      // Set up the edit button
+      document.getElementById("edit-recipe").onclick = function () {
+        editRecipe(recipe, index);
+      };
+
+      // Set up the delete button
+      document.getElementById("delete-recipe").onclick = function () {
+        deleteRecipe(index);
+      };
+
+      // Rating system (star buttons)
+      const stars = document.querySelectorAll("#star-rating .star");
+      stars.forEach((star) => {
+        star.addEventListener("click", function () {
+          const rating = parseInt(star.getAttribute("data-rating"));
+          updateRating(rating, index);
+          setRating(rating); // Update the visual rating
+        });
+      });
+    }
+
+    // Function to visually set the rating on the modal
+    function setRating(rating) {
+      const stars = document.querySelectorAll("#star-rating .star");
+      stars.forEach((star) => {
+        const starRating = parseInt(star.getAttribute("data-rating"));
+        if (starRating <= rating) {
+          star.classList.add("selected");
+        } else {
+          star.classList.remove("selected");
+        }
+      });
+    }
+
+    // Function to update the rating for a recipe in localStorage
+    function updateRating(rating, index) {
+      const recipes = JSON.parse(localStorage.getItem("recipes")) || [];
+      recipes[index].rating = rating;
+      localStorage.setItem("recipes", JSON.stringify(recipes));
+    }
+
+    // Function to edit a recipe
+    function editRecipe(recipe, index) {
+      // Pre-fill form with existing data
+      document.getElementById("title").value = recipe.title;
+      document.getElementById("ingredients").value = recipe.ingredients;
+      document.getElementById("instructions").value = recipe.instructions;
+      // The photo input remains empty; if no new image is uploaded, the original is kept
+      currentRecipeIndex = index;
+      document.getElementById("recipe-form").onsubmit = function (event) {
+        event.preventDefault();
+        updateRecipe(index);
+      };
+      // Close the modal
+      document.getElementById("recipe-details-modal").style.display = "none";
+    }
+
+    // Function to update a recipe after editing
+    function updateRecipe(index) {
+      const title = document.getElementById("title").value;
+      const ingredients = document.getElementById("ingredients").value;
+      const instructions = document.getElementById("instructions").value;
+
+      const recipes = JSON.parse(localStorage.getItem("recipes")) || [];
+      recipes[index] = {
+        title,
+        ingredients,
+        instructions,
+        photo: recipes[index].photo,
+        rating: recipes[index].rating,
+      };
+
+      localStorage.setItem("recipes", JSON.stringify(recipes));
+
+      // Reload recipe cards
+      document.getElementById("recipe-cards-container").innerHTML = "";
+      loadRecipes();
+
+      // Close the modal
+      document.getElementById("recipe-details-modal").style.display = "none";
+    }
+
+    // Function to delete a recipe
+    function deleteRecipe(index) {
+      const recipes = JSON.parse(localStorage.getItem("recipes")) || [];
+      recipes.splice(index, 1); // Remove the recipe at the given index
+      localStorage.setItem("recipes", JSON.stringify(recipes));
+
+      // Reload recipe cards
+      document.getElementById("recipe-cards-container").innerHTML = "";
+      loadRecipes();
+
+      // Close the modal
+      document.getElementById("recipe-details-modal").style.display = "none";
+    }
+
+    // Close the modal when the close button is clicked
+    document.getElementById("close-modal").addEventListener("click", function () {
+      document.getElementById("recipe-details-modal").style.display = "none";
+    });
+
+    // Close the modal if the user clicks outside the modal content
+    window.addEventListener("click", function (event) {
+      const modal = document.getElementById("recipe-details-modal");
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>

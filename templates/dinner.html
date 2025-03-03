@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delicious dinner Recipes</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body class="bg-gray-50 min-h-screen" x-data="recipeData">
+    <header class="bg-gradient-to-r  text-white py-12" style="background-color:  #6A40BF;">
+        <div class="container mx-auto px-4">
+            <h1 class="text-4xl font-bold text-center mb-4">Lunch Recipes</h1>
+            <p class="text-center text-lg">End your day with these delicious dinner recipes</p>
+        </div>
+    </header>
+    <main class="container mx-auto px-4 py-8">
+
+        <div class="mb-8 p-4 bg-white rounded-lg shadow-md flex flex-col md:flex-row md:space-x-4">
+            <div class="mb-4 md:mb-0">
+                <label for="time">Max Time:</label>
+                <select id="time" x-model="filters.time" class="border rounded px-2 py-1">
+                    <option value="">Any</option>
+                    <option value="10">10 mins</option>
+                    <option value="15">15 mins</option>
+                    <option value="20">20 mins</option>
+                    <option value="25">25 mins</option>
+                    <option value="30">30 mins</option>
+                    <option value="45">45 mins</option>
+                </select>
+            </div>
+            <div class="mb-4 md:mb-0">
+                <label for="serves">Serves:</label>
+                <select id="serves" x-model="filters.serves" class="border rounded px-2 py-1">
+                    <option value="">Any</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+            </div>
+           <div>
+                <label for="type">Type:</label>
+                <select id="type" x-model="filters.type" class="border rounded px-2 py-1">
+                    <option value="">Any</option>
+                    <option value="veg">Veg</option>
+                    <option value="nonveg">Non-Veg</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            <template x-for="recipe in filteredRecipes" :key="recipe.name">
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                    <div class="relative h-48">
+                        <img :src="recipe.image" :alt="recipe.name" class="absolute inset-0 w-full h-full object-contain bg-yellow-50"/>
+                    </div>
+                    <div class="p-6">
+                        <h2 class="text-2xl font-bold mb-2" x-text="recipe.name"></h2>
+                        <div class="flex items-center mb-4">
+                            <span class="text-gray-600 mr-4">⏰ <span x-text="recipe.time"></span></span>
+                            <span class="text-gray-600 mr-4">👥 Serves <span x-text="recipe.serves"></span></span>
+                            <span class="text-gray-600 capitalize" x-text="recipe.type"></span>
+                        </div>
+                        <div class="mb-4">
+                            <h3 class="font-semibold mb-2">Ingredients:</h3>
+                            <ul class="text-gray-600 list-disc pl-5">
+                                <template x-for="ingredient in recipe.ingredients">
+                                    <li x-text="ingredient"></li>
+                                </template>
+                            </ul>
+                        </div>
+                        <button class=" text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors" style="background-color: #6A40BF;">View Full Recipe</button>
+                    </div>
+                </div>
+            </template>
+
+        </div>
+    </main>
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p>© 2025 Breakfast Recipes. All recipes are kitchen-tested and approved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('recipeData', () => ({
+                filters: {
+                    time: '',
+                    serves: '',
+                    type: ''
+                },
+                recipes: [
+                    {
+                        name: "Salmon with Roasted Vegetables",
+                        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT50rVsH7aenlVprmaYnRlcPiyUFIe4c4jsLg&s",
+                        time: "30 mins",
+                        serves: 2,
+                        type: "nonveg",
+                        ingredients: ["Salmon Fillets", "Broccoli Florets", "Bell Pepper Slices", "Red Onion Wedges", "Olive Oil", "Lemon Juice", "Herbs & Spices"]
+                    },
+                    {
+                        name: "Beef Stir-Fry",
+                        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6HUkz6Wc7po7NwaGDIZCt9N8naGJ-Xc83Vw&s",
+                        time: "25 mins",
+                        serves: 2,
+                        type: "nonveg",
+                        ingredients: ["Beef Strips", "Broccoli Florets", "Carrot Sticks", "Snap Peas", "Soy Sauce", "Ginger", "Garlic"]
+                    },
+                    {
+                        name: "Chicken Fajitas",
+                        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTkWwU334Yn6GEPy69ya5q1xRhVIxC8LVLxA&s",
+                        time: "30 mins",
+                        serves: 2,
+                        type: "nonveg",
+                        ingredients: ["Chicken Breast Strips", "Bell Pepper Slices", "Onion Slices", "Tortillas", "Salsa", "Sour Cream", "Guacamole"]
+                    },
+                    {
+                        name: "Pasta with Marinara Sauce",
+                        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjyhQhuaq9lhzjwT7gZur76QjviLeQc9D6Gw&s",
+                        time: "25 mins",
+                        serves: 2,
+                        type: "veg",
+                        ingredients: ["Pasta (Spaghetti or Penne)", "Canned Crushed Tomatoes", "Garlic", "Onion", "Olive Oil", "Basil", "Oregano"]
+                    },
+                    {
+                        name: "Shrimp Scampi",
+                        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHre-OobBWkRO0KbquGjZcWhVv-yZMgndCsQ&s",
+                        time: "20 mins",
+                        serves: 2,
+                        type: "nonveg",
+                        ingredients: ["Shrimp", "Garlic", "White Wine", "Butter", "Lemon Juice", "Red Pepper Flakes", "Pasta (Linguine)"]
+                    },
+                    {
+                        name: "Spicy Peanut Noodles",
+                        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3mXIjF9aNORoBckaMgIGhFPwCkbffSNUryA&s",
+                        time: "25 mins",
+                        serves: 2,
+                        type: "veg",
+                        ingredients: ["Rice Noodles", "Peanut Butter", "Soy Sauce", "Lime Juice", "Chili Flakes", "Vegetables (Bell peppers, carrots, spinach)", "Peanuts, Cilantro (for garnish)"]
+                    },
+                    {
+                        name: "Lemon Herb Roasted Chicken & Potatoes",
+                        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVsp_HygAH-7fY9ya4IbtTyIeppt880834mQ&s",
+                        time: "1 hr",
+                        serves: 4,
+                        type: "nonveg",
+                        ingredients: ["Chicken (whole or pieces)", "Potatoes", "Lemon", "Garlic", "Olive Oil", "Rosemary, Thyme"]
+                    },
+                    {
+                        name: "Black Bean & Corn Salsa Burgers",
+                        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsfjImktPfbm07YkX_G_JqQU8aRvQjkYw7Tw&s",
+                        time: "30 mins",
+                        serves: 4,
+                        type: "veg",
+                        ingredients: ["Black Beans", "Corn", "Red Onion", "Spices", "Burger Buns", "Salsa, Avocado, Greek Yogurt (for toppings)"]
+                    },
+                    {
+                        name: "Sheet Pan Fajitas",
+                        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2sG4W0SZQ1eGh0SFVAgHZrJL9djNqFZ-b8g&s",
+                        time: "30 mins",
+                        serves: 4,
+                        type: "nonveg", // Can be veg if using tofu
+                        ingredients: ["Chicken, Shrimp, or Tofu", "Bell Peppers", "Onions", "Fajita Seasoning", "Tortillas", "Toppings (Salsa, Sour Cream, Guacamole)"]
+                    },
+                    {
+                        name: "Creamy Tomato Soup & Grilled Cheese Croutons",
+                        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1Kwocyhin981gTJKp4J_156GxB7y4O9r4ug&s",
+                        time: "30 mins",
+                        serves: 2,
+                        type: "veg",
+                        ingredients: ["Canned Tomatoes", "Cream or Coconut Milk", "Bread", "Cheese"]
+                    }
+                ],
+                get filteredRecipes() {
+                    return this.recipes.filter(recipe => {
+                        const timeMatch = this.filters.time === '' || recipe.time <= this.filters.time;
+                        const servesMatch = this.filters.serves === '' || recipe.serves == parseInt(this.filters.serves);
+                        const typeMatch = this.filters.type === '' || recipe.type === this.filters.type;
+                        return timeMatch && servesMatch && typeMatch;
+                    });
+                }
+            }));
+        });
+    </script>
+</body>
+</html>

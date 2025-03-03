@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delicious Breakfast Recipes</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body class="bg-gray-50 min-h-screen" x-data="recipeData">
+    <header class="bg-gradient-to-r text-white py-12" style="background-color:  #6A40BF;">
+        <div class="container mx-auto px-4">
+            <h1 class="text-4xl font-bold text-center mb-4">Breakfast Recipes</h1>
+            <p class="text-center text-lg">Start your day with these delicious breakfast ideas</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+
+        <div class="mb-8 p-4 bg-white rounded-lg shadow-md flex flex-col md:flex-row md:space-x-4">
+            <div class="mb-4 md:mb-0">
+                <label for="time">Max Time:</label>
+                <select id="time" x-model="filters.time" class="border rounded px-2 py-1">
+                    <option value="">Any</option>
+                    <option value="10">10 mins</option>
+                    <option value="15">15 mins</option>
+                    <option value="20">20 mins</option>
+                    <option value="25">25 mins</option>
+                    <option value="30">30 mins</option>
+                    <option value="45">45 mins</option>
+                </select>
+            </div>
+            <div class="mb-4 md:mb-0">
+                <label for="serves">Serves:</label>
+                <select id="serves" x-model="filters.serves" class="border rounded px-2 py-1">
+                    <option value="">Any</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+            </div>
+            <div>
+                <label for="type">Type:</label>
+                <select id="type" x-model="filters.type" class="border rounded px-2 py-1">
+                    <option value="">Any</option>
+                    <option value="veg">Veg</option>
+                    <option value="nonveg">Non-Veg</option>
+                </select>
+            </div>
+        </div>
+
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            <template x-for="recipe in filteredRecipes" :key="recipe.name">
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                    <div class="relative h-48">
+                        <img :src="recipe.image" :alt="recipe.name" class="absolute inset-0 w-full h-full object-contain bg-yellow-50"/>
+                    </div>
+                    <div class="p-6">
+                        <h2 class="text-2xl font-bold mb-2" x-text="recipe.name"></h2>
+                        <div class="flex items-center mb-4">
+                            <span class="text-gray-600 mr-4">⏰ <span x-text="recipe.time"></span> mins</span>
+                            <span class="text-gray-600">👥 Serves <span x-text="recipe.serves"></span></span>
+                            <span class="text-gray-600 ml-4 capitalize" x-text="recipe.type"></span> </div>
+                        <div class="mb-4">
+                            <h3 class="font-semibold mb-2">Ingredients:</h3>
+                            <ul class="text-gray-600 list-disc pl-5">
+                                <template x-for="ingredient in recipe.ingredients">
+                                    <li x-text="ingredient"></li>
+                                </template>
+                            </ul>
+                        </div>
+                        <button class=" text-white px-4 py-2 rounded hover:bg-orange-600 transition-colors" style="background-color: #6A40BF;">View Full Recipe</button>
+                    </div>
+                </div>
+            </template>
+
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p>© 2025 Breakfast Recipes. All recipes are kitchen-tested and approved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('recipeData', () => ({
+                filters: {
+                    time: '',
+                    serves: '',
+                    type: ''
+                },
+                recipes: [
+                    {
+                        name: "Classic Pancakes",
+                        image: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=500&auto=format",
+                        time: 20,
+                        serves: 4,
+                        type: "veg",
+                        ingredients: ["2 cups all-purpose flour", "2 eggs", "1¾ cups milk", "2 tbsp sugar", "2 tsp baking powder"]
+                    },
+                    {
+                        name: "Avocado Toast",
+                        image: "https://images.unsplash.com/photo-1588137378633-dea1336ce1e2?w=500&auto=format",
+                        time: 10,
+                        serves: 2,
+                        type: "veg",
+                        ingredients: ["2 slices sourdough bread", "1 ripe avocado", "Cherry tomatoes", "Red pepper flakes", "Salt and pepper"]
+                    },
+                    {
+                        name: "Breakfast Smoothie Bowl",
+                        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOmVj-W8WCAWTM_zMAiGClw-uRejIrCgjLCA&sw=500&auto=format",
+                        time: 15,
+                        serves: 1,
+                        type: "veg",
+                        ingredients: ["Frozen mixed berries", "1 banana", "Greek yogurt", "Honey", "Granola and chia seeds"]
+                    },
+                    {
+                        name: "Eggs Benedict",
+                        image: "https://images.unsplash.com/photo-1608039829572-78524f79c4c7?w=500&auto=format",
+                        time: 25,
+                        serves: 2,
+                        type: "nonveg",
+                        ingredients: ["English muffins", "4 eggs", "Canadian bacon", "Hollandaise sauce", "Fresh herbs"]
+                    },
+                    {
+                        name: "Overnight Oats",
+                        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-p2YyUxUxX6IYTDLn-HUYPZklphkU6W1oQg&s",
+                        time: 5,
+                        serves: 1,
+                        type: "veg",
+                        ingredients: ["Rolled oats", "Almond milk", "Chia seeds", "Honey or maple syrup", "Fresh fruits"]
+                    },
+                    {
+                        name: "French Toast",
+                        image: "https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=500&auto=format",
+                        time: 15,
+                        serves: 3,
+                        type: "veg",
+                        ingredients: ["Thick bread slices", "3 eggs", "Milk and vanilla", "Cinnamon", "Maple syrup"]
+                    },
+                    {
+                        name: "Breakfast Burrito",
+                        image: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=500&auto=format",
+                        time: 20,
+                        serves: 2,
+                        type: "nonveg", // Added type
+                        ingredients: ["Large tortillas", "Scrambled eggs", "Black beans", "Cheese and salsa", "Avocado"]
+                    },
+                        {
+                        name: "Greek Yogurt Parfait",
+                        image: "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=500&auto=format",
+                        time: 10,
+                        serves: 1,
+                        type: "veg", // Added type
+                        ingredients: ["Greek yogurt", "Mixed berries", "Granola", "Honey", "Nuts and seeds"]
+                        },
+                        {
+                        name: "Breakfast Quiche",
+                        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQt-edUREUvLoHRygEgg_wUZpVChnIXfoIG9g&s",
+                        time: 45,
+                        serves: 6,
+                        type: "nonveg", // Added type
+                        ingredients: ["Pie crust", "6 eggs", "Spinach and mushrooms", "Heavy cream", "Cheese"]
+                        },
+                        {
+                        name: "Belgian Waffles",
+                        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSitqo03PKh7ALeHuFGlCe5115NKyUdOSfMXw&s",
+                        time: 25,
+                        serves: 4,
+                        type: "veg", // Added type
+                        ingredients: ["2 cups flour", "2 eggs, separated", "2 cups milk", "1/2 cup vegetable oil", "Vanilla extract"]
+                        },
+                        {
+                        name: "Eggs Florentine",
+                        image: "https://images.unsplash.com/photo-1525351484163-7529414344d8",
+                        time: 20,
+                        serves: 2,
+                        type: "nonveg", // Added type
+                        ingredients: ["Fresh spinach", "4 eggs", "English muffins", "Hollandaise sauce", "Butter"]
+                        },
+                        {
+                        name: "Breakfast Pizza",
+                        image: "https://images.unsplash.com/photo-1513104890138-7c749659a591",
+                        time: 30,
+                        serves: 4,
+                        type: "nonveg", // Added type
+                        ingredients: ["Pizza dough", "Scrambled eggs", "Bacon bits", "Mozzarella cheese", "Bell peppers"]
+                        },
+                        {
+                        name: "Shakshuka",
+                        image: "https://images.unsplash.com/photo-1590412200988-a436970781fa",
+                        time: 35,
+                        serves: 3,
+                        type: "nonveg", // Added type
+                        ingredients: ["Tomatoes", "6 eggs", "Bell peppers", "Onions and garlic", "Spices"]
+                        },
+                        {
+                        name: "Breakfast Sandwich",
+                        image: "https://images.unsplash.com/photo-1550507992-eb63ffee0847",
+                        time: 15,
+                        serves: 1,
+                        type: "nonveg", // Added type
+                        ingredients: ["English muffin", "Fried egg", "Cheese slice", "Bacon or ham", "Butter"]
+                        },
+                        {
+                        name: "Fruit and Granola Bowl",
+                        image: "https://images.unsplash.com/photo-1546039907-7fa05f864c02",
+                        time: 10,
+                        serves: 2,
+                        type: "veg", // Added type
+                        ingredients: ["Mixed fresh fruits", "Homemade granola", "Greek yogurt", "Honey", "Mint leaves"]
+                        },
+                        {
+                        name: "Breakfast Muffins",
+                        image: "https://images.unsplash.com/photo-1615837197154-2e801f4bd294",
+                        time: 30,
+                        serves: 12,
+                        type: "veg", // Added type
+                        ingredients: ["All-purpose flour", "Blueberries", "Eggs and milk", "Vanilla extract", "Baking powder"]
+                        },
+                        {
+                        name: "Breakfast Tacos",
+                        image: "https://images.unsplash.com/photo-1552332386-f8dd00dc2f85",
+                        time: 20,
+                        serves: 4,
+                        type: "nonveg", // Added type
+                        ingredients: ["Corn tortillas", "Scrambled eggs", "Chorizo", "Avocado", "Salsa verde"]
+                        }
+                        ],
+                        get filteredRecipes() {
+                            return this.recipes.filter(recipe => {
+                                const timeMatch = this.filters.time === '' || recipe.time <= this.filters.time;
+                                const servesMatch = this.filters.serves === '' || recipe.serves == parseInt(this.filters.serves);
+                                const typeMatch = this.filters.type === '' || recipe.type === this.filters.type;
+                                return timeMatch && servesMatch && typeMatch;
+                        });
+                        }
+                        }));
+                        });
+                        </script>
+                        </body>
+                        </html>
